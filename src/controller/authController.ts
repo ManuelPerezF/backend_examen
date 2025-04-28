@@ -8,8 +8,11 @@ export class AuthController {
         this.dbService = dbService;
     }
 
-    async login(username: string, password: string): Promise<Employee | null> {
-        return this.dbService.findEmployeeByCredentials(username, password);
+    async login(username: string, password: string): Promise<Employee> {
+        const employee = await this.dbService.findEmployeeByCredentials(username, password);
+        if (!employee) {
+            throw new Error("Invalid credentials");
+        }
+        return employee;
     }
-
 }
